@@ -138,9 +138,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onPhoneSubmitted }) => {
                                 mb: 3,
                                 '& .MuiOutlinedInput-root': {
                                     color: '#fff',
+                                    backgroundColor: 'rgba(255,255,255,0.06)',
                                     '& fieldset': { borderColor: 'rgba(255,255,255,0.15)' },
                                     '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.3)' },
                                     '&.Mui-focused fieldset': { borderColor: '#7C4DFF' },
+                                },
+                                '& .MuiInputBase-input': {
+                                    color: '#fff',
                                 },
                                 '& .MuiInputBase-input::placeholder': {
                                     color: 'rgba(255,255,255,0.3)',
@@ -192,7 +196,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onPhoneSubmitted }) => {
                     </Typography>
                 </Box>
             </Box>
-        </>
     );
 };
 
