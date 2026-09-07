@@ -31,11 +31,17 @@ interface HomeScreenProps {
     onLogout: () => void;
 }
 
+const SLIDESHOW_IMAGES = [
+    'https://i.ibb.co/x8f7rJpY/Chat-GPT-Image-Sep-7-2026-10-35-26-PM.png',
+    'https://i.ibb.co/jPQJpFPS/Chat-GPT-Image-Sep-7-2026-10-37-59-PM.png',
+];
+
 const HomeScreen: React.FC<HomeScreenProps> = ({ customer, cards, activeRfid, onCardSwitch, onNavigate, onLogout }) => {
     const [showDropdown, setShowDropdown] = useState(false);
     const [recentGames, setRecentGames] = useState<BillingRecord[]>([]);
     const [balance, setBalance] = useState({ balance_main: customer.balance_main, balance_bonus: customer.balance_bonus });
     const [loadingBalance, setLoadingBalance] = useState(false);
+    const [slideIndex, setSlideIndex] = useState(0);
 
     const activeCard = cards.find(c => c.rfid === activeRfid) || cards[0];
 
@@ -43,6 +49,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ customer, cards, activeRfid, on
         fetchBalance();
         fetchRecentGames();
     }, [activeRfid]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setSlideIndex((prev) => (prev + 1) % SLIDESHOW_IMAGES.length);
+        }, 3000);
+        return () => clearInterval(timer);
+    }, []);
 
     const fetchBalance = async () => {
         setLoadingBalance(true);
@@ -208,6 +221,49 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ customer, cards, activeRfid, on
                         </Box>
                     </CardContent>
                 </Card>
+            </Box>
+
+            {/* Slideshow */}
+            <Box sx={{ px: 3.5, mt: 2.5 }}>
+                <Box
+                    sx={{
+                        borderRadius: '20px',
+                        overflow: 'hidden',
+                        position: 'relative',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                    }}
+                >
+                    {SLIDESHOW_IMAGES.map((src, index) => (
+                        <Box
+                            key={index}
+                            component="img"
+                            src={src}
+                            alt={`Slide ${index + 1}`}
+                            sx={{
+                                width: '100%',
+                                display: index === slideIndex ? 'block' : 'none',
+                                aspectRatio: '16/9',
+                                objectFit: 'cover',
+                            }}
+                        />
+                    ))}
+                    <Box sx={{ position: 'absolute', bottom: 12, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 1 }}>
+                        {SLIDESHOW_IMAGES.map((_, index) => (
+                            <Box
+                                key={index}
+                                onClick={() => setSlideIndex(index)}
+                                sx={{
+                                    width: index === slideIndex ? 20 : 8,
+                                    height: 8,
+                                    borderRadius: 4,
+                                    bgcolor: index === slideIndex ? '#fff' : 'rgba(255,255,255,0.5)',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                }}
+                            />
+                        ))}
+                    </Box>
+                </Box>
             </Box>
 
             {/* Card Switcher */}

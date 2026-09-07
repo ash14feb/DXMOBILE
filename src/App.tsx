@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ThemeProvider, CssBaseline, Box, CircularProgress } from '@mui/material';
 import theme from './theme';
 import LoginScreen from './components/LoginScreen';
-import OtpScreen from './components/OtpScreen';
 import HomeScreen from './components/HomeScreen';
 import TransactionsScreen from './components/TransactionsScreen';
 import RechargesScreen from './components/RechargesScreen';
@@ -11,7 +10,6 @@ import BottomNav from './components/BottomNav';
 import { Customer, Card, Screen } from './types';
 
 const App: React.FC = () => {
-    const [authPhone, setAuthPhone] = useState('');
     const [customer, setCustomer] = useState<Customer | null>(null);
     const [cards, setCards] = useState<Card[]>([]);
     const [activeRfid, setActiveRfid] = useState('');
@@ -32,10 +30,6 @@ const App: React.FC = () => {
         }
         setLoading(false);
     }, []);
-
-    const handlePhoneSubmitted = (phone: string) => {
-        setAuthPhone(phone);
-    };
 
     const handleVerified = (cust: Customer, cardList: Card[], token: string) => {
         setCustomer(cust);
@@ -61,7 +55,6 @@ const App: React.FC = () => {
         setCustomer(null);
         setCards([]);
         setActiveRfid('');
-        setAuthPhone('');
     };
 
     if (loading) {
@@ -100,15 +93,7 @@ const App: React.FC = () => {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <Box sx={{ height: '100vh' }}>
-                    {!authPhone ? (
-                        <LoginScreen onPhoneSubmitted={handlePhoneSubmitted} />
-                    ) : (
-                        <OtpScreen
-                            phone={authPhone}
-                            onVerified={handleVerified}
-                            onBack={() => setAuthPhone('')}
-                        />
-                    )}
+                    <LoginScreen onVerified={handleVerified} />
                 </Box>
             </ThemeProvider>
         );

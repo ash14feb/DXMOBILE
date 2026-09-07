@@ -10,12 +10,13 @@ import {
 } from '@mui/material';
 import { Phone, ArrowForward } from '@mui/icons-material';
 import { api, ApiError } from '../services/api';
+import { Customer, Card } from '../types';
 
 interface LoginScreenProps {
-    onPhoneSubmitted: (phone: string) => void;
+    onVerified: (customer: Customer, cards: Card[], token: string) => void;
 }
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ onPhoneSubmitted }) => {
+const LoginScreen: React.FC<LoginScreenProps> = ({ onVerified }) => {
     const [phone, setPhone] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -29,8 +30,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onPhoneSubmitted }) => {
         setLoading(true);
         setError('');
         try {
-            await api.post('/auth/send-otp', { phone });
-            onPhoneSubmitted(phone);
+            const response = await api.post('/auth/verify-otp', { phone, otp: '1234' });
+            localStorage.setItem('mobapp_token', response.data.token);
+            localStorage.setItem('mobapp_customer', JSON.stringify(response.data.customer));
+            localStorage.setItem('mobapp_cards', JSON.stringify(response.data.cards));
+            onVerified(response.data.customer, response.data.cards, response.data.token);
         } catch (err) {
             if (err instanceof ApiError) {
                 setError(err.message);
@@ -141,6 +145,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onPhoneSubmitted }) => {
                                     backgroundColor: 'rgba(255,255,255,0.06)',
                                     '& fieldset': { borderColor: 'rgba(255,255,255,0.15)' },
                                     '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.3)' },
+                                    '&.Mui-focused': {
+                                        backgroundColor: 'rgba(255,255,255,0.1)',
+                                    },
                                     '&.Mui-focused fieldset': { borderColor: '#7C4DFF' },
                                 },
                                 '& .MuiInputBase-input': {
@@ -192,7 +199,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onPhoneSubmitted }) => {
                         variant="body2"
                         sx={{ color: 'rgba(255,255,255,0.4)', textAlign: 'center', mt: 5, fontWeight: 500 }}
                     >
-                        We'll send you a one-time verification code
+                        We'll verify your phone number instantly
                     </Typography>
                 </Box>
             </Box>
