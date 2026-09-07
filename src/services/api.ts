@@ -1,5 +1,5 @@
-const BASE_URL = 'http://localhost:3001/mobapp_api';
-
+const BASE_URL = 'https://dxmobileapi.vercel.app/';
+//const BASE_URL = 'http://localhost:3001/mobapp_api';
 export class ApiError extends Error {
     status: number;
     constructor(message: string, status: number) {
