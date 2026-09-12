@@ -1,0 +1,11 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+/.vs/DXMOBILE/CopilotIndices/17.14.1431.25910
+/.vs/DXMOBILE/FileContentIndex
+/.vs/DXMOBILEUI/CopilotIndices/17.14.1431.25910

@@ -1,0 +1,6 @@
+{
+  "name": "DimensionX Mobile",
+  "description": "Premium arcade companion app for DimensionX customers to manage cards, balances, and play history.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
