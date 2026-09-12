@@ -16,16 +16,16 @@ const SmokeCircle = ({ color, initialX, initialY, delay, duration }: { color: st
     className={`absolute rounded-full blur-[100px] mix-blend-screen w-[250px] h-[250px] ${color}`}
     style={{ left: initialX, top: initialY }}
     animate={{
-      x: [0, 80, -60, 0],
-      y: [0, -70, 80, 0],
-      scale: [1, 1.4, 0.9, 1],
-      opacity: [0.6, 1, 0.6]
+      x: [0, 40, -30, 0],
+      y: [0, -35, 40, 0],
+      scale: [1, 1.2, 0.9, 1],
+      opacity: [0.3, 0.5, 0.3]
     }}
     transition={{
-      duration: duration,
+      duration: duration * 1.5,
       delay: delay,
       repeat: Infinity,
-      ease: "easeInOut"
+      ease: "linear"
     }}
   />
 );
